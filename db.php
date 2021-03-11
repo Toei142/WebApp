@@ -10,7 +10,6 @@ class Database
     public function __construct()
     {
         $this->conn = new mysqli(hostname, username, password, dbname);
-        $this->conn->query("SELECT * FROM `book` WHERE 1");
         $this->conn->query("SET NAMES UTF8");
         if ($this->conn->connect_error) echo "not connect";
         else echo "Connect success55";
