@@ -10,6 +10,5 @@
     if($conn->connect_error) echo "not connect";
     else echo "Connect success";
     class Database{
-
     }
 ?>
