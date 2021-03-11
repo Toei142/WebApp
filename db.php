@@ -8,6 +8,6 @@
     $conn=new mysqli(hostname,username,password,dbname);
     $conn->query("SELECT * FROM `book` WHERE 1");
     if($conn->connect_error) echo "not connect";
-    else echo "Connect success 142";
+    else echo "Connect success";
    
 ?>
