@@ -21,7 +21,6 @@
 
     </textarea>
     <script>
-        var str = "";
         var jsonEx = <?php echo $jsonfile ?>;
         for (var y = 1900; y <= 2018; y++) {
             document.getElementById("year_m").innerHTML += "<option value='" + y + "'>" + y + "</option>";
