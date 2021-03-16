@@ -13,7 +13,7 @@
         <table>
             <tr>
                 <td><label for="">BookID</label></td>
-                <td><input type="text" name="id" id="" required></td>
+                <td><input type="text" name="insert_id" id="" required></td>
             </tr>
             <tr>
                 <td><label for="">BookName</label></td>

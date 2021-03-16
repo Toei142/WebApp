@@ -49,8 +49,10 @@ class Database
     public function insertData($data)
     {
         $sql = "INSERT INTO `book`(`BookID`, `BookName`, `TypeID`, `StatusID`, `Publish`, `UnitPrice`, `UnitRent`, `DayAmount`, `Picture`) 
-        VALUES ('{$data['id']}'},'{$data['name']}','{$data['type']}','{$data['status']}','{$data['pub']}','{$data['unitp']}','{$data['unitr']}','{$data['day']}','{$data['pic']}')";
+        VALUES ('{$data['id']}','{$data['name']}','{$data['type']}','{$data['status']}','{$data['pub']}',{$data['unitp']},{$data['unitr']},{$data['day']},'{$data['pic']}')";
         $result = $this->conn->query($sql);
+        echo $sql;
+        echo $result;
     }
     public function disconnect()
     {
@@ -70,13 +72,13 @@ class Database
     }
     public function sltStatus()
     {
-        $sql = "SELECT * FROM typebook";
+        $sql = "SELECT * FROM statusbook";
         $result = $this->conn->query($sql);
-        echo "<select name='typeID'>";
+        echo "<select name='stautsID'>";
         while ($row = $result->fetch_assoc()) {
             foreach ($row as $key => $value) {
             }
-            echo "<option value='{$row['TypeID']}'>{$row['TypeName']}</option>";
+            echo "<option value='{$row['StatusID']}'>{$row['StatusName']}</option>";
         }
         echo "</select>";
     }
