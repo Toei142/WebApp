@@ -12,6 +12,7 @@
     <?php
     $jsonfile = file_get_contents("movies.json");
     ?>
+
     <select name="year_movie" id="year_m" onchange="sltY()"></select><br>
     <select name="year_movie" id="year_movie" onchange="sltM()"></select><br>
     <input type="text" name="" id="year"><br>
@@ -22,9 +23,10 @@
     <script>
         var str = "";
         var jsonEx = <?php echo $jsonfile ?>;
-        for (var y = 1900; y < 2018; y++) {
+        for (var y = 1900; y <= 2018; y++) {
             document.getElementById("year_m").innerHTML += "<option value='" + y + "'>" + y + "</option>";
         }
+        sltY();
 
         function sltY() {
             document.getElementById("year_movie").innerHTML = "";
@@ -33,6 +35,7 @@
                     document.getElementById("year_movie").innerHTML += "<option value='" + jsonEx[i].year + " : " + jsonEx[i].title + "'>" + jsonEx[i].year + " : " + jsonEx[i].title + "</option>";
                 }
             }
+            sltM();
         }
 
         function sltM() {
@@ -53,7 +56,7 @@
             }
         }
     </script>
-    <div id="output"></div>
+
 </body>
 
 </html>
