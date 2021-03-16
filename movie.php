@@ -18,8 +18,8 @@
     <input type="text" name="" id="year"><br>
     <input type="text" name="" id="title"><br>
     <textarea name="" id="cast" cols="30" rows="10">
-
     </textarea>
+
     <script>
         var jsonEx = <?php echo $jsonfile ?>;
         for (var y = 1900; y <= 2018; y++) {
@@ -36,7 +36,6 @@
             }
             sltM();
         }
-
         function sltM() {
             var value = document.getElementById("year_movie").value;
             var year = value.substr(0, 5);
@@ -48,7 +47,7 @@
                         document.getElementById("title").value = jsonEx[i].title;
                         document.getElementById("cast").value = "";
                         for (var j = 0; j < jsonEx[i].cast.length; i++) {
-                            document.getElementById("cast").value += jsonEx[i].cast[j];
+                            document.getElementById("cast").value += jsonEx[i].cast[j]+"\n";
                         }
                     }
                 }
