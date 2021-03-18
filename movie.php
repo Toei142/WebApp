@@ -22,8 +22,14 @@
 
     <script>
         var jsonEx = <?php echo $jsonfile ?>;
-        for (var y = 1900; y <= 2018; y++) {
-            document.getElementById("year_m").innerHTML += "<option value='" + y + "'>" + y + "</option>";
+        var year = new Set();
+        for (var y = 0; y < jsonEx.length; y++) {
+            year.add(jsonEx[y].year);
+            
+        }
+        const ref_year = year.values();
+        for (var y = 0; y < year.size; y++) {
+            document.getElementById("year_m").innerHTML += "<option>" + ref_year.next().value + "</option>";
         }
         sltY();
 
@@ -36,6 +42,7 @@
             }
             sltM();
         }
+
         function sltM() {
             var value = document.getElementById("year_movie").value;
             var year = value.substr(0, 5);
@@ -47,7 +54,7 @@
                         document.getElementById("title").value = jsonEx[i].title;
                         document.getElementById("cast").value = "";
                         for (var j = 0; j < jsonEx[i].cast.length; i++) {
-                            document.getElementById("cast").value += jsonEx[i].cast[j]+"\n";
+                            document.getElementById("cast").value += jsonEx[i].cast[j] + "\n";
                         }
                     }
                 }
