@@ -17,7 +17,6 @@
     <table>
         <thead></thead>
         <tbody id="tbody">
-
         </tbody>
     </table>
     <script>
@@ -25,12 +24,14 @@
             document.getElementById("tbody").innerHTML = "";
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
-                console.log(this.readyState + "," + this.status);
+                // console.log(this.readyState + "," + this.status);
                 if (this.readyState == 4 && this.status == 200) { //เช็คการเชื่่อมต่อ
                     let fileJson = JSON.parse(this.responseText);
+                    var text = "";
                     for (var i = 0; i < fileJson.length; i++) {
-                        console.log(fileJson[i].id);
-                        document.getElementById("tbody").innerHTML += "<tr><td>" + fileJson[i].id + "</td><td>" + fileJson[i].name + "</td></tr>"
+                        text += "<tr><td>" + fileJson[i].name + "</td><td>" + fileJson[i].age + "</td>";
+                        text += "<td> <button onclick='delete_id(" + fileJson[i].id + ")''>Delete</button></td></tr>";
+                        document.getElementById("tbody").innerHTML = text;
                     }
                 }
             }
@@ -41,9 +42,8 @@
         function add_new() {
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
-                console.log(this.readyState + "," + this.status);
                 if (this.readyState == 4 && this.status == 200) { //เช็คการเชื่่อมต่อ
-                    // alert(this.responseText);
+                    loadDoc();
                 }
             }
             n = document.getElementById("u_name");
@@ -51,7 +51,20 @@
             xhttp.open("POST", "02 rest.php", true);
             xhttp.setRequestHeader("content-type", "application/x-www-form-urlencoded");
             xhttp.send("u_name=" + n.value + "&u_age=" + a.value);
-            loadDoc();
+            a.value = ""; n.value = "";
+
+        }
+        function delete_id(id) {
+            console.log("u_id=" + id);
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    loadDoc();
+                }
+            }
+            xhttp.open("DELETE", "02 rest.php?u_id=" + id, true);
+            xhttp.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+            xhttp.send();
         }
     </script>
 </body>
