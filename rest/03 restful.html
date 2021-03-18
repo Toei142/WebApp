@@ -16,35 +16,34 @@
     <input type="text" name="u_age" id="u_age">
     <table>
         <thead></thead>
-        <tbody id="tbody"></tbody>
+        <tbody id="tbody">
+
+        </tbody>
     </table>
     <script>
         function loadDoc() {
+            document.getElementById("tbody").innerHTML = "";
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 console.log(this.readyState + "," + this.status);
                 if (this.readyState == 4 && this.status == 200) { //เช็คการเชื่่อมต่อ
-                    var jsonfile = this.responseText;
-                    //  alert(jsonfile);
-
-                    // for (var i = 0; i < jsonfile.length; i++) {
-                    //     console.log(jsonfile[i].id);
-                    //     //console.log(i);
-                    //     // if (jsonEx[i].year == document.getElementById("year_m").value) {
-                    //     //     document.getElementById("year_movie").innerHTML += "<option value='" + jsonEx[i].year + " : " + jsonEx[i].title + "'>" + jsonEx[i].year + " : " + jsonEx[i].title + "</option>";
-                    //     // }
-                    // }
+                    let fileJson = JSON.parse(this.responseText);
+                    for (var i = 0; i < fileJson.length; i++) {
+                        console.log(fileJson[i].id);
+                        document.getElementById("tbody").innerHTML += "<tr><td>" + fileJson[i].id + "</td><td>" + fileJson[i].name + "</td></tr>"
+                    }
                 }
             }
             xhttp.open("GET", "02 rest.php");
             xhttp.send();
         }
+
         function add_new() {
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 console.log(this.readyState + "," + this.status);
                 if (this.readyState == 4 && this.status == 200) { //เช็คการเชื่่อมต่อ
-                   console.log(this.responseText);
+                    // alert(this.responseText);
                 }
             }
             n = document.getElementById("u_name");
@@ -52,6 +51,7 @@
             xhttp.open("POST", "02 rest.php", true);
             xhttp.setRequestHeader("content-type", "application/x-www-form-urlencoded");
             xhttp.send("u_name=" + n.value + "&u_age=" + a.value);
+            loadDoc();
         }
     </script>
 </body>

@@ -1,7 +1,7 @@
 <?php
 include_once "01 db.php";
 include_once "util.php";
-$debug_mode = true;
+$debug_mode = false;
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     debug_text("GET METHOD Process....", $debug_mode);
     echo json_encode(show_data($debug_mode));
