@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body onload="loadDoc()">
+    <h1>Result</h1>
+    <button onclick="add_new()">Add </button>
+    <div id="result"></div>
+    <input type="text" name="u_name" id="u_name">
+    <input type="text" name="u_age" id="u_age">
+    <table>
+        <thead></thead>
+        <tbody id="tbody"></tbody>
+    </table>
+    <script>
+        function loadDoc() {
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+
+
+                console.log(this.readyState + "," + this.status);
+                if (this.readyState == 4 && this.status == 200) { //เช็คการเชื่่อมต่อ
+                    var jsonfile = this.responseText;
+                    alert(jsonfile);
+
+                    for (var i = 0; i < jsonfile.length; i++) {
+                        console.log(jsonfile[i].id);
+                        //console.log(i);
+                        // if (jsonEx[i].year == document.getElementById("year_m").value) {
+                        //     document.getElementById("year_movie").innerHTML += "<option value='" + jsonEx[i].year + " : " + jsonEx[i].title + "'>" + jsonEx[i].year + " : " + jsonEx[i].title + "</option>";
+                        // }
+                    }
+                }
+            }
+            xhttp.open("GET", "02 rest.php");
+            xhttp.send();
+        }
+
+        function add_new() {
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                console.log(this.readyState + "," + this.status);
+                if (this.readyState == 4 && this.status == 200) { //เช็คการเชื่่อมต่อ
+                    // alert(this.responseText);
+                }
+            }
+            n = document.getElementById("u_name");
+            a = document.getElementById("u_age");
+            xhttp.open("POST", "02 rest.php", true);
+            xhttp.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+            xhttp.send("u_name=" + n.value + "&u_age=" + a.value);
+        }
+    </script>
+</body>
+
+</html>
