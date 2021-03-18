@@ -22,32 +22,29 @@
         function loadDoc() {
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
-
-
                 console.log(this.readyState + "," + this.status);
                 if (this.readyState == 4 && this.status == 200) { //เช็คการเชื่่อมต่อ
                     var jsonfile = this.responseText;
-                    alert(jsonfile);
+                    //  alert(jsonfile);
 
-                    for (var i = 0; i < jsonfile.length; i++) {
-                        console.log(jsonfile[i].id);
-                        //console.log(i);
-                        // if (jsonEx[i].year == document.getElementById("year_m").value) {
-                        //     document.getElementById("year_movie").innerHTML += "<option value='" + jsonEx[i].year + " : " + jsonEx[i].title + "'>" + jsonEx[i].year + " : " + jsonEx[i].title + "</option>";
-                        // }
-                    }
+                    // for (var i = 0; i < jsonfile.length; i++) {
+                    //     console.log(jsonfile[i].id);
+                    //     //console.log(i);
+                    //     // if (jsonEx[i].year == document.getElementById("year_m").value) {
+                    //     //     document.getElementById("year_movie").innerHTML += "<option value='" + jsonEx[i].year + " : " + jsonEx[i].title + "'>" + jsonEx[i].year + " : " + jsonEx[i].title + "</option>";
+                    //     // }
+                    // }
                 }
             }
             xhttp.open("GET", "02 rest.php");
             xhttp.send();
         }
-
         function add_new() {
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 console.log(this.readyState + "," + this.status);
                 if (this.readyState == 4 && this.status == 200) { //เช็คการเชื่่อมต่อ
-                    // alert(this.responseText);
+                   console.log(this.responseText);
                 }
             }
             n = document.getElementById("u_name");

@@ -17,8 +17,8 @@ class db
     {
         $result = $this->db->query($sql);
         $this->debug_text($sql);
-        $data = $result->fetch_all(MYSQLI_ASSOC);
-        return $data;
+        // $data = $result->fetch_all(MYSQLI_ASSOC);
+        // return $data;
     }
     function debug_text($text)
     {
