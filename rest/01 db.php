@@ -31,4 +31,3 @@ class db
         $this->db->close();
     }
 }
-?>
