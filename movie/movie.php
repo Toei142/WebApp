@@ -25,7 +25,7 @@
         var year = new Set();
         for (var y = 0; y < jsonEx.length; y++) {
             year.add(jsonEx[y].year);
-            
+
         }
         const ref_year = year.values();
         for (var y = 0; y < year.size; y++) {
