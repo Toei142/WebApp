@@ -8,8 +8,9 @@
     <title>Document</title>
 </head>
 
-<body onload="loadDoc()">
+<body onload="showOrderAll()">
     <h1>รายการขาย</h1>
+    <a href=""><button>เพิ่มใบสั่งซื้อ</button></a>
     <table>
         <thead>
             <tr>
@@ -23,7 +24,7 @@
         </tbody>
     </table>
     <script>
-        function loadDoc() {
+        function showOrderAll() {
             document.getElementById("tbody").innerHTML = "";
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
@@ -34,13 +35,17 @@
                     for (var i = 0; i < fileJson.length; i++) {
                         text += "<tr><td>" + fileJson[i].orderID + "</td><td>" + fileJson[i].date + "</td>";
                         text += "<td>  <a href='orderDetails.php?id=" + fileJson[i].orderID + "'><button>แสดง</button></a></td>";
-                        text += "<td> <button onclick='select_id(" + fileJson[i].orderID + ")''>ลบ</button></td></tr>";
+                        text += "<td> <button onclick='deleteOrderByID(" + fileJson[i].orderID + ")''>ลบ</button></td></tr>";
                         document.getElementById("tbody").innerHTML = text;
                     }
                 }
             }
             xhttp.open("GET", "02 rest.php?order");
             xhttp.send();
+        }
+
+        function deleteOrderByID(id) {
+            alert("ลบรหัส " + id);
         }
 
         function add_new() {

@@ -28,23 +28,28 @@
         showProductByOrderID();
 
         function showProductByOrderID() {
+            const oderID = <?php echo $_GET['id']; ?>;
             document.getElementById("tbody").innerHTML = "";
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
-                // console.log(this.readyState + "," + this.status);
                 if (this.readyState == 4 && this.status == 200) { //เช็คการเชื่่อมต่อ
                     let fileJson = JSON.parse(this.responseText);
                     var text = "";
                     for (var i = 0; i < fileJson.length; i++) {
                         text += "<tr><td>" + fileJson[i].productId + "</td><td>" + fileJson[i].name + "</td>";
                         text += "<td>" + fileJson[i].price + "</td><td>" + fileJson[i].number + "</td><td>" + (fileJson[i].number * fileJson[i].price) + "</td>";
-                        text += "<td> <button onclick='select_id(" + fileJson[i].orderID + ")''>ลบ</button></td></tr>";
+                        text += "<td> <button onclick='deleteProductByID(" + fileJson[i].productId + ")''>ลบ</button></td></tr>";
                         document.getElementById("tbody").innerHTML = text;
                     }
                 }
             }
-            xhttp.open("GET", "02 rest.php?productID=<?php echo $_GET['id'] ?>");
+            xhttp.open("GET", "02 rest.php?productID=" + oderID);
             xhttp.send();
+        }
+
+        function deleteProductByID(id) {
+            const oderID = <?php echo $_GET['id']; ?>;
+            alert("ยังไม่ได้ทำลบ" + oderID + " " + id);
         }
 
         function add_new() {
