@@ -20,6 +20,7 @@ class db
         $data = $result->fetch_all(MYSQLI_ASSOC);
         return $data;
     }
+   
     function debug_text($text)
     {
         if ($this->debug) {

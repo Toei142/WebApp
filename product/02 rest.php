@@ -13,54 +13,54 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     debug_text("POST METHOD May be implement soon.....", $debug_mode);
-    //$message = array("status" => print_r($_POST));
-    add_data($debug_mode, $_POST['u_name'], $_POST['u_age']);
+    $message = array("status" => print_r($_POST));
     echo json_encode($message);
+    if (isset($_POST['insertOder'])) {
+        insert_order($debug_mode, $_POST['productId'], $_POST['number']);
+    }
 } else if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
-    debug_text("DELETE METHOD.....", $debug_mode);
-    delete_id($debug_mode, $_GET['u_id']);
-    $message = array("status" => print_r($_GET['u_id']));
+    // debug_text("DELETE METHOD.....", $debug_mode);
+    // delete_id($debug_mode, $_GET['u_id']);
+    $message = array("status" => print_r($_GET['DeleteOrderByID']));
     echo json_encode($message);
+    if (isset($_GET['DeleteOrderByID'])) {
+        deleteOrderByID($debug_mode, $_GET['DeleteOrderByID']);
+    }
 } else {
     debug_text("Error this site Unsupport This request", $debug_mode);
     http_response_code(405);
 }
 function show_order($debug_mode)
 {
-    $mydb = new db("root", "", "product", $debug_mode);
-    $data = $mydb->query("SELECT * FROM `order`");
+    $mydb = new db("root", "", "itishop", $debug_mode);
+    $data = $mydb->query("SELECT * FROM `orders`");
     $mydb->close();
     return $data;
 }
 function show_product($debug_mode)
 {
-    $mydb = new db("root", "", "product", $debug_mode);
+    $mydb = new db("root", "", "itishop", $debug_mode);
     $data = $mydb->query("SELECT * FROM `product`");
     return $data;
     $mydb->close();
 }
 function showProductByOrderID($debug_mode, $id)
 {
-    $mydb = new db("root", "", "product", $debug_mode);
+    $mydb = new db("root", "", "itishop", $debug_mode);
     $data = $mydb->query("SELECT orderdetails.productId,product.name,orderdetails.number,product.price FROM orderdetails,product WHERE orderdetails.productId=product.productID AND orderdetails.orderID=$id");
     return $data;
     $mydb->close();
 }
-function insert_order($debug_mode)
+function insert_order($debug_mode, $id, $num)
 {
-    $mydb = new db("root", "", "product", $debug_mode);
-    $mydb->query("INSERT INTO `order`(`orderID`, `date`) VALUES (null,null)");
+    $mydb = new db("root", "", "itishop", $debug_mode);
+    $mydb->deleteUpdate("INSERT INTO `orders`(`orderID`, `date`) VALUES (null,null)");
+    $mydb->deleteUpdate("INSERT INTO orderdetails SELECT MAX(orderID),$id,$num FROM orders");
     $mydb->close();
 }
-function add_data($debug_mode, $name, $age)
+function deleteOrderByID($debug_mode, $id)
 {
-    $mydb = new db("root", "", "product", $debug_mode);
-    $mydb->query("INSERT INTO `person`(`name`, `age`) VALUES ('$name',$age)");
-    $mydb->close();
-}
-function delete_id($debug_mode, $id)
-{
-    $mydb = new db("root", "", "product", $debug_mode);
-    $mydb->query("DELETE FROM orderdetails WHERE id=$id");
+    $mydb = new db("root", "", "itishop", $debug_mode);
+    $mydb->deleteUpdate("DELETE orders,orderdetails FROM orders INNER JOIN orderdetails ON orders.orderID=orderdetails.orderID WHERE orders.orderID={$id}");
     $mydb->close();
 }

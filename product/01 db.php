@@ -20,6 +20,10 @@ class db
         $data = $result->fetch_all(MYSQLI_ASSOC);
         return $data;
     }
+    function deleteUpdate($sql)
+    {
+        $result = $this->db->query($sql);
+    }
     function debug_text($text)
     {
         if ($this->debug) {
