@@ -71,9 +71,9 @@
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) { //เช็คการเชื่่อมต่อ
-                    //location.href = "selectProduct.php";
+                    location.href = "selectProduct.php";
                     // alert(this.responseText);
-                    showOrderAll();
+                   // showOrderAll();
                 }
             }
             pid = document.getElementById("product");

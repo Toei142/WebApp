@@ -9,9 +9,10 @@
 </head>
 
 <body>
- <select name="" id="">
-     <option value=""></option>
- </select>
+    <select name="" id="product"> </select>
+    <label for="">จำนวน</label>
+    <input type="number" name="" id="number" value="0">
+    <a href=""><button onclick="addOrder()">เพิ่มสินค้า</button></a>
 </body>
 
 </html>
