@@ -13,7 +13,7 @@
         <form action="rest.php" method="post">
             <h1 style="margin: 0;">ShopShock Member Register</h1><br>
             <table style="margin-right: auto;margin-left: auto;">
-            <input type="hidden" name="Register">
+                <input type="hidden" name="Register">
                 <tr>
                     <td><label for="">Name</label></td>
                     <td><input type="text" name="name" id=""></td>
