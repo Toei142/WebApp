@@ -1,8 +1,10 @@
 <?php
 include_once "db.php";
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    if (isset($_GET['productlist'])) {
+    if (isset($_GET['productList'])) {
         echo json_encode(showProductList());
+    } else if (isset($_GET['productByID'])) {
+        echo json_encode(showProductByID($_GET['id']));
     }
 } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['Register'])) {
@@ -49,16 +51,21 @@ function showProductList()
     $mydb->close();
     return $data;
 }
-
-
-
-
 function showProductByID($id)
 {
     $mydb = new db("root", "", "shopshock");
-    $data = $mydb->CUD("SELECT product.*,unit.*,brand.* FROM `product`,brand,unit WHERE product.Brand_ID=brand.Brand_id AND product.Unit_ID=unit.Unit_id AND product.Product_id=$id");
-    return $data->fetch_assoc();
+    $data = $mydb->query("SELECT product.*,unit.*,brand.* FROM `product`,brand,unit WHERE product.Brand_ID=brand.Brand_id AND product.Unit_ID=unit.Unit_id AND product.Product_id=$id");
+    return $data;
 }
+
+
+
+// function showProductByID($id)
+// {
+//     $mydb = new db("root", "", "shopshock");
+//     $data = $mydb->CUD("SELECT product.*,unit.*,brand.* FROM `product`,brand,unit WHERE product.Brand_ID=brand.Brand_id AND product.Unit_ID=unit.Unit_id AND product.Product_id=$id");
+//     return $data->fetch_assoc();
+// }
 
 function show_data()
 {

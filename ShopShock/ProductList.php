@@ -21,7 +21,6 @@
                 ?>
             </h3>
         </div>
-
         <h1 style="text-align: center;">SHOPSHOCK</h1>
         <table style='margin-left: auto;margin-right: auto;'>
             <tbody id="tbody"></tbody>
@@ -43,13 +42,13 @@
                     text += "<td>" + fileJson[i].Brand_name + "</td>";
                     text += "<td>" + fileJson[i].Unit_name + "</td>";
                     text += "<td>" + fileJson[i].Cost + "</td>";
-                    text += "<td><a href='Add_Product.php?id=" + fileJson[i].Product_id + "'><'Shop Shock'></a></td>";
+                    text += "<td><a href='Add_Product.php?id=" + fileJson[i].Product_id + "'>Shop Shock</a></td>";
                     text += "</tr>";
                     document.getElementById("tbody").innerHTML = text;
                 }
             }
         }
-        xhttp.open("GET", "rest.php?productlist");
+        xhttp.open("GET", "rest.php?productList");
         xhttp.send();
     </script>
 </body>
