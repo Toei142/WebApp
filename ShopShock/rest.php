@@ -5,6 +5,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         echo json_encode(showProductList());
     } else if (isset($_GET['productByID'])) {
         echo json_encode(showProductByID($_GET['id']));
+    } else if (isset($_GET['billByID'])) {
+        echo json_encode(showBill());
+    } else if (isset($_GET['billDetailByBillID'])) {
+        echo json_encode(showBillDetail());
     }
 } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['Register'])) {
@@ -15,6 +19,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         if (login($_POST['username'], $_POST['password'])) {
             echo 1;
         } else echo "รหัสผ่านผิด";
+    } else if (isset($_POST['insertBill'])) {
+        if (insertBill($_POST['pid'], $_POST['qtt'], $_POST['price'])) {
+            echo 1;
+        } else echo "ERROR";
     }
 } else if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
     delete_id($_GET['u_id']);
@@ -31,6 +39,29 @@ function insertMember($name, $user, $password)
     return $data;
     $mydb->close();
 }
+function insertBill($pid, $qtt, $price)
+{
+    $mydb = new db("root", "", "shopshock");
+    $mydb->CUD("INSERT INTO `bill` SELECT MAX(Bill_id)+1,null,null,null,0,null FROM bill");
+    $data = $mydb->CUD("INSERT INTO `bill_detail` SELECT MAX(Bill_id),$pid,$qtt,$price FROM bill");
+    return $data;
+    $mydb->close();
+}
+function showBill()
+{
+    $mydb = new db("root", "", "shopshock");
+    $data = $mydb->query("SELECT * FROM `bill` WHERE 1");
+    return $data;
+    $mydb->close();
+}
+function showBillDetail()
+{
+    $mydb = new db("root", "", "shopshock");
+    $data = $mydb->query("SELECT * FROM `bill_detail` WHERE 1");
+    return $data;
+    $mydb->close();
+}
+
 function login($user, $pass)
 {
     $mydb = new db("root", "", "shopshock");

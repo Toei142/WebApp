@@ -47,7 +47,7 @@ require_once "Verified.php";
             </tr>
         </table>
         <hr>
-        <div style="text-align: center;"><button type="submit">Submit</button> <button type="reset">Reset</button></div>
+        <div style="text-align: center;"><button type="submit" onclick="insertBill()">Submit</button> <button type="reset">Reset</button></div>
     </div>
     <script>
         var param = window.location.search.substr(4);
@@ -69,7 +69,28 @@ require_once "Verified.php";
         }
         xhttp.open("GET", "rest.php?productByID&id=" + param);
         xhttp.send();
+
+        function insertBill() {
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) { //เช็คการเชื่่อมต่อ
+                    if (this.responseText == 1) {
+                        alert("ซื่่อสำเร็จ");
+                        location.href = "Po.php";
+                    } else {
+                        alert(this.responseText);
+                    }
+                }
+            }
+            pid = document.getElementById("Product_ID");
+            qtt = document.getElementById("Quantity");
+            price = document.getElementById("Cost");
+            xhttp.open("POST", "rest.php");
+            xhttp.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+            xhttp.send("insertBill=''&pid=" + pid.value + "&qtt=" + qtt.value + "&price=" + price.value);
+        }
     </script>
+
 </body>
 
 </html>
