@@ -6,8 +6,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['Register'])) {
-        insertMember($_POST['name'], $_POST['nickname'], $_POST['pass']);
-        header('Location:Login.php');
+        if (insertMember($_POST['name'], $_POST['nickname'], $_POST['pass'])) {
+            echo 1;
+        } else echo "สมัครสมาชิกไม่สำเร็จ";
     } else if (isset($_POST['login'])) {
         if (login($_POST['username'], $_POST['password'])) {
             echo 1;
@@ -24,7 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 function insertMember($name, $user, $password)
 {
     $mydb = new db("root", "", "shopshock");
-    $mydb->CUD("INSERT INTO `member`SELECT MAX(member_id)+1,'{$name}','{$user}','{$password}','01' FROM member");
+    $data =  $mydb->CUD("INSERT INTO `member`SELECT MAX(member_id)+1,'{$name}','{$user}','{$password}','01' FROM member");
+    return $data;
     $mydb->close();
 }
 function login($user, $pass)
@@ -47,6 +49,9 @@ function showProductList()
     $mydb->close();
     return $data;
 }
+
+
+
 
 function showProductByID($id)
 {
