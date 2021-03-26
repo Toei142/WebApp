@@ -9,7 +9,14 @@
 </head>
 
 <body>
+    <select name="" id="product"> </select>
+    <label for="">จำนวน</label>
+    <input type="number" name="" id="number" value="1">
+    <button onclick="addProduct()">เพิ่มสินค้า</button>
     <h1>รายละเอียดใบสั่งซื้อ</h1>
+    <div style="height:20px;margin-bottom:20px;font-size: 20px;font-weight: bold;">
+        รหัส:<input type="text" id="orderID" readonly>
+    </div>
     <table>
         <thead>
             <tr>
@@ -24,11 +31,34 @@
         <tbody id="tbody">
         </tbody>
     </table>
+    <button type="submit" onclick="pay()">ชำระเงิน</button>
     <script>
+        showProduct();
         showProductByOrderID();
 
+        var param = window.location.search.substr(4);
+        document.getElementById("orderID").value = param;
+        console.log(param);
+
+        function showProduct() {
+            document.getElementById("product").innerHTML = "";
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) { //เช็คการเชื่่อมต่อ
+                    let fileJson = JSON.parse(this.responseText);
+                    var text = "";
+                    for (var i = 0; i < fileJson.length; i++) {
+                        text += '<option value="' + fileJson[i].productID + '">' + fileJson[i].name + '</option>';
+                        document.getElementById("product").innerHTML = text;
+                    }
+                }
+            }
+            xhttp.open("GET", "02 rest.php?product");
+            xhttp.send();
+        }
+
         function showProductByOrderID() {
-            const oderID = <?php echo $_GET['id']; ?>;
+            const orderID = <?php echo $_GET['id']; ?>;
             document.getElementById("tbody").innerHTML = "";
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
@@ -43,43 +73,40 @@
                     }
                 }
             }
-            xhttp.open("GET", "02 rest.php?productID=" + oderID);
+            xhttp.open("GET", "02 rest.php?productByOrderID=" + orderID);
             xhttp.send();
         }
 
-        function deleteProductByID(id) {
-            const oderID = <?php echo $_GET['id']; ?>;
-            alert("ยังไม่ได้ทำลบ" + oderID + " " + id);
-        }
-
-        function add_new() {
+        function addProduct() {
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) { //เช็คการเชื่่อมต่อ
-                    loadDoc();
+                    //  alert(this.responseText);
+                    showProductByOrderID();
                 }
             }
-            n = document.getElementById("u_name");
-            a = document.getElementById("u_age");
+            oid = document.getElementById("orderID");
+            pid = document.getElementById("product");
+            num = document.getElementById("number");
             xhttp.open("POST", "02 rest.php", true);
             xhttp.setRequestHeader("content-type", "application/x-www-form-urlencoded");
-            xhttp.send("u_name=" + n.value + "&u_age=" + a.value);
-            a.value = "";
-            n.value = "";
-
+            xhttp.send("insertProductInOrder=''&orderID=" + oid.value + "&productID=" + pid.value + "&number=" + num.value);
         }
 
-        function delete_id(id) {
-            console.log("u_id=" + id);
+        function deleteProductByID(id) {
+            const orderID = <?php echo $_GET['id']; ?>;
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    loadDoc();
+                if (this.readyState == 4 && this.status == 200) { //เช็คการเชื่่อมต่อ
+                    showProductByOrderID();
                 }
             }
-            xhttp.open("DELETE", "02 rest.php?u_id=" + id, true);
-            xhttp.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+            xhttp.open("DELETE", "02 rest.php?DeleteProductByID=''&orderID=" + orderID + "&productID=" + id);
             xhttp.send();
+        }
+
+        function pay() {
+            location.href = "order.php";
         }
     </script>
 </body>

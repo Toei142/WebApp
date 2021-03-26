@@ -22,7 +22,7 @@ class db
     }
     function deleteUpdate($sql)
     {
-        $result = $this->db->query($sql);
+        return  $this->db->query($sql);
     }
     function debug_text($text)
     {

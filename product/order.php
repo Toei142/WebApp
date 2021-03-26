@@ -9,12 +9,12 @@
 </head>
 
 <body onload="showOrderAll()">
-    <h1>รายการขาย</h1>
-
+    <h1>ขายสินค้า</h1>
     <select name="" id="product"> </select>
     <label for="">จำนวน</label>
-    <input type="number" name="" id="number" value="0">
+    <input type="number" name="" id="number" value="1">
     <a href=""><button onclick="addOrder()">เพิ่มใบสั่งซื้อ</button></a>
+    <h1>รายการขาย</h1>
     <table>
         <thead>
             <tr>
@@ -32,7 +32,6 @@
             document.getElementById("tbody").innerHTML = "";
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
-                // console.log(this.readyState + "," + this.status);
                 if (this.readyState == 4 && this.status == 200) { //เช็คการเชื่่อมต่อ
                     let fileJson = JSON.parse(this.responseText);
                     var text = "";
@@ -71,56 +70,24 @@
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) { //เช็คการเชื่่อมต่อ
-                    location.href = "selectProduct.php";
-                    // alert(this.responseText);
-                   // showOrderAll();
+                    location.href = "orderDetails.php?id=" + this.responseText;
                 }
             }
             pid = document.getElementById("product");
             num = document.getElementById("number");
             xhttp.open("POST", "02 rest.php", true);
             xhttp.setRequestHeader("content-type", "application/x-www-form-urlencoded");
-            xhttp.send("insertOder=''&productId=" + pid.value + "&number=" + num.value);
+            xhttp.send("insertOrder=''&productId=" + pid.value + "&number=" + num.value);
         }
 
         function deleteOrderByID(id) {
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) { //เช็คการเชื่่อมต่อ
-                    alert(this.responseText);
                     showOrderAll();
                 }
             }
             xhttp.open("DELETE", "02 rest.php?DeleteOrderByID=" + id);
-            xhttp.send();
-        }
-
-        function add_new() {
-            let xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) { //เช็คการเชื่่อมต่อ
-                    loadDoc();
-                }
-            }
-            n = document.getElementById("u_name");
-            a = document.getElementById("u_age");
-            xhttp.open("POST", "02 rest.php", true);
-            xhttp.setRequestHeader("content-type", "application/x-www-form-urlencoded");
-            xhttp.send("u_name=" + n.value + "&u_age=" + a.value);
-            a.value = "";
-            n.value = "";
-
-        }
-
-        function delete_id(id) {
-            let xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    loadDoc();
-                }
-            }
-            xhttp.open("DELETE", "02 rest.php?u_id=" + id, true);
-            xhttp.setRequestHeader("content-type", "application/x-www-form-urlencoded");
             xhttp.send();
         }
     </script>
