@@ -6,27 +6,39 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
+
 
 <body onload="showOrderAll()">
     <h1>ขายสินค้า</h1>
+
     <select name="" id="product"> </select>
+
     <label for="">จำนวน</label>
     <input type="number" name="" id="number" value="1">
-    <a href=""><button onclick="addOrder()">เพิ่มใบสั่งซื้อ</button></a>
+    <button class="button2" onclick="addOrder()" style="vertical-align:middle"><span>เพิ่มใบสั่งซื้อ</span></button>
     <h1>รายการขาย</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>รหัส</th>
-                <th>วันที่ชื้อ</th>
-                <th>รายละเอียด</th>
-                <th>ลบ</th>
-            </tr>
-        </thead>
-        <tbody id="tbody">
-        </tbody>
-    </table>
+    <div class="tb">
+        <div class="tbl-header">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th>รหัส</th>
+                        <th>วันที่ชื้อ</th>
+                        <th>รายละเอียด</th>
+                        <th>ลบ</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="tbl-content">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tbody id="tbody"></tbody>
+            </table>
+        </div>
+
+    </div>
     <script>
         function showOrderAll() {
             document.getElementById("tbody").innerHTML = "";
