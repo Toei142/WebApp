@@ -51,9 +51,7 @@ function open_bill()
         // check [0][0] bill_id
         //       [0][1] bill_status
         if ($bill_result[0][1] == 0) {
-            $sql = "SELECT Bill_id, Product_ID FROM bill_detail
-                        WHERE Bill_id='{$_SESSION['cus_id']}'
-                        and Product_ID = '{$p_id}'";
+            $sql = "SELECT Bill_id, Product_ID,Quantity FROM bill_detail WHERE Bill_id='{$_SESSION['cus_id']}' and Product_ID = '{$p_id}'"; //มีสินค้าหรือป่าว
             $result = $db->query($sql);
             if (sizeof($result) == 0) {
                 // add new product
@@ -62,6 +60,10 @@ function open_bill()
                 $result = $db->exec($sql);
             } else {
                 // update current item
+                // update current item
+                $total = print_r($p_qty + $result[0][2]);
+                $sql = "UPDATE `bill_detail` SET `Bill_id`={$bill_result[0][0]},`Product_ID`={$p_id},`Quantity`={$total},`Unit_Price`={$p_price} WHERE Product_ID = {$p_id}";
+                $result = $db->exec($sql);
             }
         }
     }
