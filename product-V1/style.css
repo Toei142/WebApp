@@ -1,0 +1,41 @@
+.container {
+    margin: 0 auto;
+    width: 80%;
+}
+
+.column {
+    margin: 0 auto;
+    float: left;
+    width: 25%;
+    padding: 10px;
+}
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    padding: 16px;
+    text-align: center;
+    background-color: #f1f1f1;
+}
+
+.row {
+    margin: 10px;
+}
+
+input[type=text] {
+    width: 50%;
+}
+
+
+/* Clear floats after the columns */
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+img {
+    height: auto;
+    width: 160px;
+    position: relative;
+}
