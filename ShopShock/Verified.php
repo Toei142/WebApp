@@ -1,5 +1,5 @@
 <?php
     session_start();
-    if ($_SESSION['member_id'] == null) {
+    if ($_SESSION == null) {
         header('Location:Login.php');
     }

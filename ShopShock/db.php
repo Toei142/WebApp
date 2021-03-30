@@ -11,16 +11,10 @@ class db
     function query($sql)
     {
         $result = $this->db->query($sql);
-        $data = $result->fetch_all(MYSQLI_ASSOC);
-        return $data;
-    }
-    function queryNUM($sql)
-    {
-        $result = $this->db->query($sql);
         $data = $result->fetch_all(MYSQLI_NUM);
         return $data;
     }
-    function CUD($sql)
+    function exec($sql)
     {
         return $this->db->query($sql);
     }

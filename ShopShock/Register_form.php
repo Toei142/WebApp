@@ -10,32 +10,29 @@
 
 <body>
     <div style="margin: 0 auto ; width:500px;border:2px red solid;padding:50px">
-        <form>
-            <h1 style="margin: 0;">ShopShock Member Register</h1><br>
-            <table style="margin-right: auto;margin-left: auto;">
-                <tr>
-                    <td><label for="">Name</label></td>
-                    <td><input type="text" name="fname" id="fname"></td>
-                </tr>
-                <tr>
-                    <td><label for="">NickName</label></td>
-                    <td><input type="text" name="nickname" id="nickname"></td>
-                </tr>
-                <tr>
-                    <td><label for="">Password</label></td>
-                    <td><input type="text" name="pass" id="pass"></td>
-                </tr>
-                <tr>
-                    <td><label for="">Confirm Password</label></td>
-                    <td><input type="text" name="con_pass" id="con_pass"></td>
-                </tr>
-                <tr style="text-align: center;">
-                    <td><button type="submit" onclick="register()">submit</button></td>
-                    <td><button type="reset">Reset</button></td>
-                </tr>
-
-            </table>
-        </form>
+        <h1 style="margin: 0;">ShopShock Member Register</h1><br>
+        <table style="margin-right: auto;margin-left: auto;">
+            <tr>
+                <td><label for="">Name</label></td>
+                <td><input type="text" name="fname" id="fname"></td>
+            </tr>
+            <tr>
+                <td><label for="">NickName</label></td>
+                <td><input type="text" name="nickname" id="nickname"></td>
+            </tr>
+            <tr>
+                <td><label for="">Password</label></td>
+                <td><input type="text" name="pass" id="pass"></td>
+            </tr>
+            <tr>
+                <td><label for="">Confirm Password</label></td>
+                <td><input type="text" name="con_pass" id="con_pass"></td>
+            </tr>
+            <tr style="text-align: center;">
+                <td><button type="submit" onclick="register()">submit</button></td>
+                <td><button type="reset">Reset</button></td>
+            </tr>
+        </table>
         <script>
             function register() {
                 if (document.getElementById("pass").value == document.getElementById("con_pass").value) {

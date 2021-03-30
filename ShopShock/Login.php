@@ -31,7 +31,6 @@
                 let xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) { //เช็คการเชื่่อมต่อ
-
                         if (this.responseText == 1) {
                             alert("ยินดีต้อนรับ");
                             location.href = "ProductList.php";
