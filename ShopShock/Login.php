@@ -35,7 +35,7 @@
                             alert("ยินดีต้อนรับ");
                             location.href = "ProductList.php";
                         } else {
-                            alert(this.responseText);
+                            alert("รหัสผ่านผิด");
                         }
                     }
                 }

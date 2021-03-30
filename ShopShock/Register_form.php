@@ -43,7 +43,7 @@
                                 alert("สมัครสมาชิกสำเร็จ");
                                 location.href = "Login.php";
                             } else {
-                                alert(this.responseText);
+                                alert("สมัครสมาชิกไม่สำเร็จ");
                             }
                         }
                     }

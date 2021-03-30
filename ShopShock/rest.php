@@ -11,16 +11,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_POST['Register'])) {
         if (insertMember($_POST['name'], $_POST['nickname'], $_POST['pass'])) {
             echo 1;
-        } else echo "สมัครสมาชิกไม่สำเร็จ";
+        } else echo 0;
     } else if (isset($_POST['login'])) {
         if (login($_POST['username'], $_POST['password'])) {
             echo 1;
-        } else echo "รหัสผ่านผิด";
+        } else echo 0;
     } else if (isset($_POST['openBill'])) {
-        echo json_encode(open_bill());
+        if (open_bill()) {
+            echo 1;
+        } else echo 0;
+        // echo json_encode(open_bill());
     }
 } else if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
-
     $message = array("status" => print_r($_GET['u_id']));
     echo json_encode($message);
 } else {
@@ -88,7 +90,6 @@ function open_bill()
             } else { //ซื้อแล้วให้เพิ่มจำนวน
                 // update current item
                 $total = $p_qty + $result[0][2];
-                echo $result[0][2];
                 $sql = "UPDATE `bill_detail` SET `Quantity`='{$total}' WHERE Product_ID = {$p_id} AND Bill_id={$bill_result[0][0]}";
                 //  echo $sql;
                 $result = $db->exec($sql);
