@@ -1,20 +1,45 @@
 .container {
     margin: 0 auto;
-    width: 80%;
+    width: 70%;
+}
+
+input[type=number] {
+    border: 1px solid #d6d6d6;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.button {
+    background-color: red;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
 .column {
     margin: 0 auto;
     float: left;
-    width: 25%;
+    width: 20%;
     padding: 10px;
 }
 
+body {
+    background-color: #F5F5F5;
+}
+
 .card {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     padding: 16px;
     text-align: center;
-    background-color: #f1f1f1;
+    background: white;
+    box-shadow: 5px 5px 15px rgb(219, 219, 219);
+    border-radius: 10px;
 }
 
 .row {
@@ -38,4 +63,90 @@ img {
     height: auto;
     width: 160px;
     position: relative;
+}
+
+
+/* button */
+
+.button2 {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: rgb(243, 103, 103);
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 15px;
+    padding: 10px;
+    width: 150px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.button2 span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.button2 span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+.button2:hover span {
+    padding-right: 25px;
+}
+
+.button2:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+.button2:hover {
+    background-color: red;
+}
+
+body {
+    margin: 0;
+}
+
+
+/* navbar */
+
+.navbar {
+    overflow: hidden;
+    background-color: rgb(243, 103, 103);
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+.navbar a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.navbar a:hover {
+    background: #ddd;
+    color: black;
+}
+
+
+/* table */
+
+th,
+td {
+    padding: 7px;
+    text-align: left;
 }

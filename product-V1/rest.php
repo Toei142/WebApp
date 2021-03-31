@@ -13,7 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_POST['insertProuct'])) {
         echo   json_encode(insertProduct());
     } else if (isset($_POST['addOrder'])) {
-        echo json_encode(openOrder());
+        if (openOrder()) {
+            echo 1;
+        } else echo 0;
     }
 } else if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
     $message = array("status" => print_r($_GET['u_id']));
@@ -62,7 +64,7 @@ function showOder($id)
 {
     $mydb = new db();
     $result = $mydb->query("SELECT * FROM `orders` WHERE status =0 AND customerID=$id", MYSQLI_NUM);
-    $result2 = $mydb->query("SELECT * FROM `orderdetails` WHERE `orderID`={$result[0][0]}", MYSQLI_NUM);
+    $result2 = $mydb->query("  SELECT p.name,o.quantity,o.unitPrice FROM orderdetails as o,product as p WHERE o.orderID={$result[0][0]} AND o.productId=p.productID", MYSQLI_ASSOC);
     return array("0" => $result, "1" => $result2);
 }
 
