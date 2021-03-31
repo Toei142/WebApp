@@ -8,10 +8,10 @@ class db
         $this->db->set_charset("utf8");
         if ($this->db->connect_errno) echo "Fail to connect to Mysql:" . $this->db->connect_error;
     }
-    function query($sql)
+    function query($sql,$option)
     {
         $result = $this->db->query($sql);
-        $data = $result->fetch_all(MYSQLI_NUM);
+        $data = $result->fetch_all($option);
         return $data;
     }
     function exec($sql)

@@ -8,25 +8,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         echo json_encode(showProductByID($_GET['id']));
     }
 } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['Register'])) {
-        if (insertMember($_POST['name'], $_POST['nickname'], $_POST['pass'])) {
-            echo 1;
-        } else echo 0;
-    } else if (isset($_POST['login'])) {
-        if (login($_POST['username'], $_POST['password'])) {
-            echo 1;
-        } else echo 0;
-    } else if (isset($_POST['openBill'])) {
-        if (open_bill()) {
-            echo 1;
-        } else echo 0;
-        // echo json_encode(open_bill());
+    if (isset($_POST['insertProuct'])) {
+        echo   json_encode(insertProduct());
     }
 } else if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
     $message = array("status" => print_r($_GET['u_id']));
     echo json_encode($message);
 } else {
     http_response_code(405);
+}
+function insertProduct()
+{
+    $path = $_FILES['img']['tmp_name'];
+    $type = pathinfo($path, PATHINFO_EXTENSION);
+    $data = file_get_contents($path);
+    $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+    $mydb = new db();
+    $sql = "INSERT INTO `product`(`image`, `name`, `number`, `price`) 
+    VALUES ('$base64','{$_POST['name']}',{$_POST['number']},{$_POST['price']})";
+    return $mydb->exec($sql);
 }
 
 function insertMember($name, $user, $password)
@@ -51,7 +51,7 @@ function login($user, $pass)
 function showProductList()
 {
     $mydb = new db();
-    return $mydb->query("SELECT * FROM `product` WHERE 1");
+    return   $mydb->query("SELECT * FROM `product`", MYSQLI_ASSOC);
     $mydb->close();
 }
 function showProductByID($id)

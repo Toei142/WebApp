@@ -11,42 +11,33 @@
 
 <body onload="productList()">
     <div class="container">
-        <div class="row">
-            <div class="column">
-                <div class="card">
-                    <img src="" alt="">
-                    <input type="text"><br>
-                    <button>สั่ง</button>
-                </div>
-            </div>
-        </div>
+        <div id="product"></div>
     </div>
-
+    <img src=" " height="" alt="">
     <script>
-        // text = "";
-        // text += "<div class='row'>";
-        // for (i = 0; i < data.length; i++) {
-        //     text += "<div class='column'>";
-        //     text += "<div class='card'>";
-        //     text += "<img src='img/img.png' alt='Girl in a jacket'><br>";
-        //     text += data[i].name + "<br>";
-        //     text += "฿ " + data[i].price + " <input type='number' name='' id='" + i + "' size='4' max='" + data[i].stock + "' min='1' value='1'>";
-        //     text += " <button onclick='add_product(" + data[i].id + "," + i + ")'>Add to Cart</button>";
-        //     text += "</div>";
-        //     text += "</div>";
-        // }
-        // text += "</div>";
-        //out.innerHTML = text;
-
         let data;
         label = ['รหัสสินค้า', 'รูป', 'ชื่อ', 'จำนวน', 'ราคา'];
 
         function productList() {
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
+                text = "";
                 if (this.readyState == 4 && this.status == 200) {
                     data = JSON.parse(this.responseText);
                     console.log(data);
+                    text += "<div class='row'>";
+                    for (i = 0; i < data.length; i++) {
+                        text += "<div class='column'>";
+                        text += "<div class='card'>";
+                        text += "<img src='" + data[i].image + "' width='5%' height='5%'><br>";
+                        text += data[i].name + "<br>";
+                        text += "฿ " + data[i].price + " <input type='number' name='' id='" + i + "' size='4' max='" + data[i].stock + "' min='1' value='1'>";
+                        text += " <button onclick='add_product(" + data[i].id + "," + i + ")'>Add to Cart</button>";
+                        text += "</div>";
+                        text += "</div>";
+                    }
+                    text += "</div>";
+                    document.getElementById("product").innerHTML = text;
 
                 }
             }
