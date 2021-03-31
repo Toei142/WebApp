@@ -6,10 +6,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         echo json_encode(showProductList());
     } else if (isset($_GET['productByID'])) {
         echo json_encode(showProductByID($_GET['id']));
+    } else if (isset($_GET['showOrderByCustomerID'])) {
+        echo json_encode(showOder(1));
     }
 } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['insertProuct'])) {
         echo   json_encode(insertProduct());
+    } else if (isset($_POST['addOrder'])) {
+        echo json_encode(openOrder());
     }
 } else if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
     $message = array("status" => print_r($_GET['u_id']));
@@ -54,51 +58,53 @@ function showProductList()
     return   $mydb->query("SELECT * FROM `product`", MYSQLI_ASSOC);
     $mydb->close();
 }
-function showProductByID($id)
+function showOder($id)
 {
     $mydb = new db();
-    return $mydb->query("SELECT product.*,unit.*,brand.* FROM `product`,brand,unit WHERE product.Brand_ID=brand.Brand_id AND product.Unit_ID=unit.Unit_id AND product.Product_id=$id");
+    $result = $mydb->query("SELECT * FROM `orders` WHERE status =0 AND customerID=$id", MYSQLI_NUM);
+    $result2 = $mydb->query("SELECT * FROM `orderdetails` WHERE `orderID`={$result[0][0]}", MYSQLI_NUM);
+    return array("0" => $result, "1" => $result2);
 }
 
-function open_bill()
+function openOrder()
 {
-    $p_id = $_POST['p_id'];
-    $p_qty = $_POST['p_qty'];
-    $p_price = $_POST['p_price'];
+    $p_id = $_POST['id'];
+    $p_qty = $_POST['qty'];
+    $p_price = $_POST['price'];
+
     $db = new db();
     //เช็ครหัสลูกค่ามีบิลป่าว
-    $sql = "SELECT Bill_id, Bill_status FROM bill WHERE Cus_ID='{$_SESSION['cus_id']}' order by Bill_id desc limit 1";
-    $bill_result = $db->query($sql);
+    $sql = "SELECT orderID, status FROM orders WHERE customerID=1 order by orderID desc limit 1";
+    $bill_result = $db->query($sql, MYSQLI_NUM);
     if (sizeof($bill_result) == 0) { //ไม่มีบิลให้สร้าง
         // insert new
-        $sql = "INSERT INTO bill(Bill_id, Cus_ID, Bill_Status) SELECT MAX(Bill_id)+1,'{$_SESSION['cus_id']}',0 FROM bill";
+        $sql = "INSERT INTO orders(orderID, customerID, status) SELECT MAX(orderID)+1,1,0 FROM orders";
         $result = $db->exec($sql);
-        $sql = "INSERT INTO bill_detail(Bill_id, Product_ID, Quantity, Unit_Price) SELECT MAX(Bill_id), '{$p_id}', '{$p_qty}', '{$p_price}' FROM bill";
+        $sql = "INSERT INTO orderdetails(orderID, productId, quantity,unitPrice) SELECT MAX(orderID),{$p_id},{$p_qty},{$p_price} FROM orders";
         $result = $db->exec($sql);
     } else { //มีบิล
         // check [0][0] bill_id
         //       [0][1] bill_status
         if ($bill_result[0][1] == 0) { //บิลยังไม่ปิดรายการขาย
             //เช็คสินค่า
-            $sql = "SELECT Bill_id, Product_ID,Quantity FROM bill_detail WHERE Bill_id='{$bill_result[0][0]}' and Product_ID = {$p_id}";
-            $result = $db->query($sql);
+            $sql = "SELECT orderID, productId,quantity FROM orderdetails WHERE orderID='{$bill_result[0][0]}' and productId = {$p_id}";
+            $result = $db->query($sql, MYSQLI_NUM);
             if (sizeof($result) == 0) { //ยังไม่ได้ซื้อให้เพิ่ม
                 // add new product
-                $sql = "INSERT INTO bill_detail(Bill_id, Product_ID, Quantity, Unit_Price)
-                        VALUES ({$bill_result[0][0]}, {$p_id}, {$p_qty}, {$p_price})";
+                $sql = "INSERT INTO orderdetails(orderID, productId, quantity, unitPrice)VALUES ({$bill_result[0][0]}, {$p_id}, {$p_qty}, {$p_price})";
                 $result = $db->exec($sql);
             } else { //ซื้อแล้วให้เพิ่มจำนวน
                 // update current item
                 $total = $p_qty + $result[0][2];
-                $sql = "UPDATE `bill_detail` SET `Quantity`='{$total}' WHERE Product_ID = {$p_id} AND Bill_id={$bill_result[0][0]}";
+                $sql = "UPDATE orderdetails SET `quantity`='{$total}' WHERE productId = {$p_id} AND orderID={$bill_result[0][0]}";
                 //  echo $sql;
                 $result = $db->exec($sql);
             }
         } else { //บิลปิดรายการขายแล้วให้สร้างใหม่เพื่อซื้อสินค้า
             // insert new
-            $sql = "INSERT INTO bill(Bill_id, Cus_ID, Bill_Status) SELECT MAX(Bill_id)+1,'{$_SESSION['cus_id']}',0 FROM bill";
+            $sql = "INSERT INTO orders(orderID, customerID, status) SELECT MAX(orderID)+1,1,0 FROM orders";
             $result = $db->exec($sql);
-            $sql = "INSERT INTO bill_detail(Bill_id, Product_ID, Quantity, Unit_Price) SELECT MAX(Bill_id), '{$p_id}', '{$p_qty}', '{$p_price}' FROM bill";
+            $sql = "INSERT INTO orderdetails(orderID, productId, quantity,unitPrice) SELECT MAX(orderID),{$p_id},{$p_qty},{$p_price} FROM orders";
             $result = $db->exec($sql);
         }
     }
