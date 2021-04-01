@@ -67,7 +67,6 @@
                     if (this.responseText == 1) {
                         alert("เพิ่มสำเร็จ");
                     } else alert("เพิ่มสินค้าไม่สำเร็จ");
-                    showOrder();
                 }
             }
             xhttp.open("POST", "rest.php", true);

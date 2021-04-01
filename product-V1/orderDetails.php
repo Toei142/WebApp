@@ -63,17 +63,27 @@
                         total += parseInt(arr[1][a].quantity * arr[1][a].unitPrice);
                     }
                     text += '<tr><td>ราคารวม</td><td>' + total + '</td></tr>';
-                    text += '<tr><td><button class="button" style="width:100px" onclick="pay('+arr[0][0][0] +')">ชำระเงิน</button></td></tr>';
+                    text += '<tr><td><button class="button" style="width:100px" onclick="pay(' + arr[0][0][0] + ')">ชำระเงิน</button></td></tr>';
                     document.getElementById("body").innerHTML = text;
                 }
             }
             xhttp.open("GET", "rest.php?showOrderByCustomerID", true);
             xhttp.send();
         }
-        function pay(id){
-            alert(id)
-        }
 
+        function pay(id) {
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    if (this.responseText == 1) {
+                        alert("เพิ่มสำเร็จ");
+                    } else alert("เพิ่มสินค้าไม่สำเร็จ");
+                }
+            }
+            xhttp.open("POST", "rest.php", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send("closeOrder&orderID=" + id);
+        }
     </script>
 </body>
 
