@@ -48,8 +48,7 @@ function open_bill()
                     VALUES (1, '{$p_id}', '{$p_qty}', '{$p_price}')";
         $result = $db->exec($sql);
     } else {
-        // check [0][0] bill_id
-        //       [0][1] bill_status
+        // check [0][0] bill_id , [0][1] bill_status
         if ($bill_result[0][1] == 0) {
             $sql = "SELECT Bill_id, Product_ID,Quantity FROM bill_detail WHERE Bill_id='{$_SESSION['cus_id']}' and Product_ID = '{$p_id}'"; //มีสินค้าหรือป่าว
             $result = $db->query($sql);
