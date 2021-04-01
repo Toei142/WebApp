@@ -9,7 +9,7 @@ class database
         $this->db->set_charset("utf8");
         if ($this->db->connect_errno) echo "Error something";
     }
-    function query($sql, $option = MYSQLI_NUM)
+    function query($sql, $option)
     {
         $result = $this->db->query($sql);
         return $result->fetch_all($option);

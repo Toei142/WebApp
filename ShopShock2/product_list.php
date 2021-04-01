@@ -15,10 +15,11 @@ $_SESSION['cus_id'] = 1;
 
 <body onload="load_doc()">
     <center>
-        <a href="handle.php">ออกจากระบบ</a>
+        <a href="logOut.php">ออกจากระบบ</a>
         <div id="out"></div>
         <br>
         <div id="out2"></div>
+        <div id="out3"></div>
     </center>
     <script>
         let arr;
@@ -68,13 +69,33 @@ $_SESSION['cus_id'] = 1;
         }
 
         function open_bill(idx, cus_id) {
+            out = document.getElementById("out2");
             qty = document.getElementById("n" + idx);
             price = arr[idx][5];
             //alert("product_code="+arr[idx][1]+"="+qty.value+",price"+price);
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
-                    alert(this.responseText);
+                    arr2 = JSON.parse(this.responseText);
+                    t1 = arr2["bill"][0];
+                    console.log(t1);
+                    text = "<table border='1'><tr>";
+                    text += "<tr><th>Bill Id</th><th>CUS_ID</th><th>EmpID</th><th>Bill Date</th><th>Bill Status</th><th>Remask</th></tr>";
+                    for (i = 0; i < t1.length; i++) {
+                        text += "<td>" + t1[i] + "</td>";
+                    }
+                    text += "</tr></table>";
+                    out3.innerHTML = text;
+                    text += "<tr>" + text + "</tr>";
+                    for (i = 0; i < arr.length; i++) {
+                        for (j = 0; j < arr[i].length - 1; j++) {
+                            text += "<td>" + arr[i][j] + "</td>";
+                        }
+                        text += "<td><button onclick='sel_product" + i + "'></button></td>";
+                        text = "<tr>" + text + "</tr>";
+                    }
+                    text += "</table>";
+
                 }
             }
             xhttp.open("POST", "product_rest.php", true);
