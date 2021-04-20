@@ -11,58 +11,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
-    <style>
-        /* button */
 
-        .button2 {
-            display: inline-block;
-            border-radius: 4px;
-            background-color: rgb(243, 103, 103);
-            border: none;
-            color: #FFFFFF;
-            text-align: center;
-            font-size: 15px;
-            padding: 10px;
-            width: 90%;
-            transition: all 0.5s;
-            cursor: pointer;
-            margin: 5px;
-        }
-
-        .button2 span {
-            cursor: pointer;
-            display: inline-block;
-            position: relative;
-            transition: 0.5s;
-        }
-
-        .button2 span:after {
-            content: '\00bb';
-            position: absolute;
-            opacity: 0;
-            top: 0;
-            right: -20px;
-            transition: 0.5s;
-        }
-
-        .button2:hover span {
-            padding-right: 25px;
-        }
-
-        .button2:hover span:after {
-            opacity: 1;
-            right: 0;
-        }
-
-        .button2:hover {
-            background-color: red;
-        }
-    </style>
 
 </head>
 
-<body onload="productList()" style="margin: 0;">
-
+<body style="margin: 0;">
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow p-3 mb-5 bg-body rounded">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">ITI SHOP</a>
@@ -104,59 +57,28 @@
         </div>
     </nav>
 
-    <div class="container" style="width: 70%;">
-        <div class="row" id="product" style="text-align: center;">
-        </div>
 
+    <div class="container" style="margin-top: 50px; ">
+
+        <div class="shadow p-3 mb-5 bg-body rounded">
+            <table class="table" style="margin: 50px; width: 90%;">
+                <thead>
+                    <tr>
+                        <th>รหัสใบสั่งซื้อ</th>
+                        <th>วันที่ซื้อ</th>
+                        <th>สถานะ</th>
+                        <th>ข้อมูลสินค้าที่ซื้อ</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script>
-        let data;
-
-        function productList() {
-            let xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                text = "";
-                if (this.readyState == 4 && this.status == 200) {
-                    data = JSON.parse(this.responseText);
-                    for (i = 0; i < data.length; i++) {
-                        text += "<div class='col-3' style='padding:10px'>";
-                        text += '<div class="card shadow p-3 mb-5 bg-body rounded" style="width: 15rem;border:none; ">';
-                        text += '<img src="' + data[i].image + '" class="card-img-top rounded mx-auto d-block" style="width: 100px;">';
-                        text += '<div class="card-body">';
-                        text += '<h5 class="card-title">' + data[i].name + '</h5>';
-                        text += "       ราคา ฿ " + data[i].cost;
-                        text += " <input type='number' class='form-control' name='' id='n" + i + "' size='4' max='" + data[i].stock + "' min='1' value='1'>";
-                        text += "       <button class='button2' style='vertical-align:middle' onclick='addProduct(" + i + ")'><span>เพิ่มไปยังรถเข็น</span></button>";
-                        text += "   </div>";
-                        text += "</div>";
-                        text += "</div>";
-                        text += "</div>";
-                    }
-
-                    document.getElementById("product").innerHTML = text;
-
-                }
-            }
-            xhttp.open("GET", "rest.php?productList", true);
-            xhttp.send();
-        }
-
-        function addProduct(id) {
-            qty = document.getElementById("n" + id);
-            let xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    if (this.responseText == 1) {
-                        alert("เพิ่มสำเร็จ");
-                        numProductInOrder();
-                    } else alert("เพิ่มสินค้าไม่สำเร็จ");
-                }
-            }
-            xhttp.open("POST", "rest.php", true);
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttp.send("addOrder&id=" + data[id].productID + "&qty=" + qty.value + "&price=" + data[id].cost);
-        }
+        showOrder();
         numProductInOrder();
 
         function numProductInOrder() {
@@ -170,6 +92,44 @@
             }
             xhttp.open("GET", "rest.php?numOrderProductByOrderId", true);
             xhttp.send();
+        }
+
+        function showOrder() {
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                text = "";
+                if (this.readyState == 4 && this.status == 200) {
+                    JSF = JSON.parse(this.responseText);
+
+                    for (i = 0; i < JSF.length; i++) {
+                        text += '<tr>';
+                        text += '<td>' + JSF[i].orderID + '</td>';
+                        text += '<td>' + JSF[i].date + '</td>';
+                        text += '<td>' + (JSF[i].status == 1 ? "<span class='badge bg-success'>ชำระเงินแล้ว</span>" : "<span class='badge bg-danger'>รอการชำระเงิน</span>") + '</td>';
+                        text += '<td><a href="order_details.php?id=' + JSF[i].orderID + '"><button class="btn btn-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right" viewBox="0 0 16 16"><path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/></svg></button></a></td>';
+                        text += '</tr>';
+                    }
+
+                    document.getElementById("tbody").innerHTML = text;
+                }
+            }
+            xhttp.open("GET", "rest.php?showOrderListByCustomerID", true);
+            xhttp.send();
+        }
+
+        function pay(id) {
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    if (this.responseText == 1) {
+                        alert("ชำระเงิน");
+                        showOrder();
+                    } else alert("ชำระเงินไม่สำเร็จ");
+                }
+            }
+            xhttp.open("POST", "rest.php", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send("closeOrder&orderID=" + id);
         }
     </script>
 </body>

@@ -11,58 +11,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
-    <style>
-        /* button */
 
-        .button2 {
-            display: inline-block;
-            border-radius: 4px;
-            background-color: rgb(243, 103, 103);
-            border: none;
-            color: #FFFFFF;
-            text-align: center;
-            font-size: 15px;
-            padding: 10px;
-            width: 90%;
-            transition: all 0.5s;
-            cursor: pointer;
-            margin: 5px;
-        }
-
-        .button2 span {
-            cursor: pointer;
-            display: inline-block;
-            position: relative;
-            transition: 0.5s;
-        }
-
-        .button2 span:after {
-            content: '\00bb';
-            position: absolute;
-            opacity: 0;
-            top: 0;
-            right: -20px;
-            transition: 0.5s;
-        }
-
-        .button2:hover span {
-            padding-right: 25px;
-        }
-
-        .button2:hover span:after {
-            opacity: 1;
-            right: 0;
-        }
-
-        .button2:hover {
-            background-color: red;
-        }
-    </style>
 
 </head>
 
-<body onload="productList()" style="margin: 0;">
-
+<body style="margin: 0;">
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow p-3 mb-5 bg-body rounded">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">ITI SHOP</a>
@@ -104,59 +57,31 @@
         </div>
     </nav>
 
-    <div class="container" style="width: 70%;">
-        <div class="row" id="product" style="text-align: center;">
-        </div>
 
+    <div class="container" style="margin-top: 50px; ">
+
+        <div class="shadow p-3 mb-5 bg-body rounded">
+            <table class="table" style="margin: 50px; width: 90%;">
+                <thead>
+                    <tr>
+                        <th>รหัสสินค้า</th>
+                        <th>ชื่อสินค้า</th>
+                        <th>รูปสินค้า</th>
+                        <th>จำนวน</th>
+                        <th>ราคา</th>
+                        <th>ราคารวม</th>
+
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script>
-        let data;
-
-        function productList() {
-            let xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                text = "";
-                if (this.readyState == 4 && this.status == 200) {
-                    data = JSON.parse(this.responseText);
-                    for (i = 0; i < data.length; i++) {
-                        text += "<div class='col-3' style='padding:10px'>";
-                        text += '<div class="card shadow p-3 mb-5 bg-body rounded" style="width: 15rem;border:none; ">';
-                        text += '<img src="' + data[i].image + '" class="card-img-top rounded mx-auto d-block" style="width: 100px;">';
-                        text += '<div class="card-body">';
-                        text += '<h5 class="card-title">' + data[i].name + '</h5>';
-                        text += "       ราคา ฿ " + data[i].cost;
-                        text += " <input type='number' class='form-control' name='' id='n" + i + "' size='4' max='" + data[i].stock + "' min='1' value='1'>";
-                        text += "       <button class='button2' style='vertical-align:middle' onclick='addProduct(" + i + ")'><span>เพิ่มไปยังรถเข็น</span></button>";
-                        text += "   </div>";
-                        text += "</div>";
-                        text += "</div>";
-                        text += "</div>";
-                    }
-
-                    document.getElementById("product").innerHTML = text;
-
-                }
-            }
-            xhttp.open("GET", "rest.php?productList", true);
-            xhttp.send();
-        }
-
-        function addProduct(id) {
-            qty = document.getElementById("n" + id);
-            let xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    if (this.responseText == 1) {
-                        alert("เพิ่มสำเร็จ");
-                        numProductInOrder();
-                    } else alert("เพิ่มสินค้าไม่สำเร็จ");
-                }
-            }
-            xhttp.open("POST", "rest.php", true);
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttp.send("addOrder&id=" + data[id].productID + "&qty=" + qty.value + "&price=" + data[id].cost);
-        }
+        showOrder();
         numProductInOrder();
 
         function numProductInOrder() {
@@ -169,6 +94,33 @@
                 }
             }
             xhttp.open("GET", "rest.php?numOrderProductByOrderId", true);
+            xhttp.send();
+        }
+
+        function showOrder() {
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                text = "";
+                total = 0;
+                if (this.readyState == 4 && this.status == 200) {
+                    JSF = JSON.parse(this.responseText);
+                    for (i = 0; i < JSF.length; i++) {
+                        text += "<tr>";
+                        console.log(JSF);
+                        text += "<td>" + JSF[i].productId + "</td>";
+                        text += "<td>" + JSF[i].name + "</td>";
+                        text += "<td><img src='" + JSF[i].image + "' alt='' style='width: 50px;'></td>";
+                        text += "<td>" + JSF[i].quantity + "</td>";
+                        text += "<td>" + JSF[i].unitPrice + "</td>";
+                        text += "<td>" + (JSF[i].quantity * JSF[i].unitPrice) + "</td>";
+                        text += "</tr > ";
+                        total += JSF[i].quantity * JSF[i].unitPrice;
+                    }
+                    text += '<tr><td colspan="3">ราคารวม</td><td colspan="3">' + total + '</td></tr>';
+                    document.getElementById("tbody").innerHTML = text;
+                }
+            }
+            xhttp.open("GET", "rest.php?showOrderDetailByCustomerID&id=" + <?php echo $_GET['id']; ?>, true);
             xhttp.send();
         }
     </script>

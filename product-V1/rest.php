@@ -8,7 +8,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     } else if (isset($_GET['productByID'])) {
         echo json_encode(showProductByID($_GET['id']));
     } else if (isset($_GET['showOrderByCustomerID'])) {
-        echo json_encode(showOder($_SESSION['customerID']));
+        echo json_encode(showOrder($_SESSION['customerID']));
+    } else if (isset($_GET['showOrderListByCustomerID'])) {
+        echo json_encode(showOrderByCustomerID());
+    } else if (isset($_GET['showOrderDetailByCustomerID'])) {
+        echo json_encode(showOrderDetailByCustomerID());
+    } else if (isset($_GET['numOrderProductByOrderId'])) {
+        echo json_encode(numOrderProductByOrderId());
     }
 } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['insertProuct'])) {
@@ -66,19 +72,38 @@ function showProductList()
     $mydb->close();
 }
 
-function showOder($id)
+function showOrder($id)
 {
     $mydb = new db();
     $result = $mydb->query("SELECT * FROM `orders` WHERE status =0 AND customerID=$id", MYSQLI_NUM);
-    $result2 = $mydb->query("  SELECT p.name,o.quantity,o.unitPrice FROM orderdetails as o,product as p WHERE o.orderID={$result[0][0]} AND o.productId=p.productID", MYSQLI_ASSOC);
+    $result2 = $mydb->query("  SELECT p.name,o.quantity,o.unitPrice,p.image FROM orderdetails as o,product as p WHERE o.orderID={$result[0][0]} AND o.productId=p.productID", MYSQLI_ASSOC);
     return array("0" => $result, "1" => $result2);
+}
+function showOrderByCustomerID()
+{
+    $mydb = new db();
+    $sql = "SELECT * FROM `orders` WHERE customerID =1 ORDER By orderID DESC";
+    return $mydb->query($sql, MYSQLI_ASSOC);
+}
+function showOrderDetailByCustomerID()
+{
+    $mydb = new db();
+    $sql = "SELECT orderdetails.*,product.* FROM `orderdetails`,product WHERE     orderdetails.productId=product.productID AND  orderdetails.orderID ={$_GET['id']}";
+    return  $mydb->query($sql, MYSQLI_ASSOC);
+}
+function numOrderProductByOrderId()
+{
+    $mydb = new db();
+    $sql = "SELECT orderID FROM `orders` WHERE status=0";
+    $result = $mydb->query($sql, MYSQLI_NUM);
+    $sql = "SELECT COUNT(orderID) as num FROM `orderdetails` WHERE `orderID` ={$result[0][0]}";
+    return $mydb->query($sql, MYSQLI_ASSOC);
 }
 function closeOrder()
 {
     $mydb = new db();
     return $mydb->exec("UPDATE `orders` SET `status`=1 WHERE `orderID`={$_POST['orderID']}");
 }
-
 function openOrder()
 {
     $p_id = $_POST['id'];
